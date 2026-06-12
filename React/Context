@@ -1,0 +1,390 @@
+# React Context API Debugging Challenge
+
+## Codebase
+
+```jsx
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect
+} from "react";
+
+// Context
+const UserContext = createContext();
+
+function Header() {
+  const { user } = useContext(UserContext);
+
+  return (
+    <div>
+      <h2>Welcome {user.name}</h2>
+    </div>
+  );
+}
+
+function Profile() {
+  const { user, setUser } = useContext(UserContext);
+
+  function updateName() {
+    user.name = "Ahmed";
+
+    setUser(user);
+  }
+
+  return (
+    <div>
+      <h3>Name: {user.name}</h3>
+
+      <button onClick={updateName}>
+        Change Name
+      </button>
+    </div>
+  );
+}
+
+function Dashboard() {
+  const { theme } = useContext(UserContext);
+
+  return (
+    <div>
+      <h3>Theme: {theme}</h3>
+    </div>
+  );
+}
+
+function Settings() {
+  const { theme, setTheme } =
+    useContext(UserContext);
+
+  return (
+    <button
+      onClick={() =>
+        setTheme(
+          theme === "light"
+            ? "dark"
+            : "light"
+        )
+      }
+    >
+      Toggle Theme
+    </button>
+  );
+}
+
+export default function App() {
+  const [user, setUser] = useState({
+    id: 1,
+    name: "Ali"
+  });
+
+  const [theme, setTheme] =
+    useState("light");
+
+  useEffect(() => {
+    console.log("App Mounted");
+  }, []);
+
+  const value = {
+    user,
+    setUser,
+    theme,
+    setTheme
+  };
+
+  return (
+    <UserContext.Provider value={value}>
+      <Header />
+
+      <Profile />
+
+      <Dashboard />
+
+      <Settings />
+    </UserContext.Provider>
+  );
+}
+```
+
+---
+
+# Questions
+
+## Q221 – What is the purpose of Context API?
+
+* [ ] Share data across components without prop drilling
+* [ ] Replace JSX
+* [ ] Create APIs
+* [ ] Access DOM directly
+
+---
+
+## Q222 – What problem does Context API solve?
+
+* [ ] Prop drilling
+* [ ] CSS styling
+* [ ] Array sorting
+* [ ] Event handling
+
+---
+
+## Q223 – Which component creates the context?
+
+```jsx
+const UserContext = createContext();
+```
+
+* [ ] `createContext`
+* [ ] `useContext`
+* [ ] `Provider`
+* [ ] `useState`
+
+---
+
+## Q224 – Which component provides data?
+
+```jsx
+<UserContext.Provider value={value}>
+```
+
+* [ ] Provider
+* [ ] Consumer
+* [ ] useEffect
+* [ ] Fragment
+
+---
+
+## Q225 – Which hook consumes context?
+
+* [ ] `useContext`
+* [ ] `useMemo`
+* [ ] `useRef`
+* [ ] `useCallback`
+
+---
+
+## Q226 – What is the bug in `updateName()`?
+
+```jsx
+function updateName() {
+  user.name = "Ahmed";
+
+  setUser(user);
+}
+```
+
+* [ ] Direct state mutation
+* [ ] Context cannot store objects
+* [ ] `setUser` is invalid
+* [ ] `user.name` is read-only
+
+---
+
+## Q227 – Correct fix?
+
+* [ ]
+
+```js
+setUser({
+  ...user,
+  name: "Ahmed"
+});
+```
+
+* [ ]
+
+```js
+user.name = "Ahmed";
+```
+
+* [ ]
+
+```js
+setUser("Ahmed");
+```
+
+* [ ]
+
+```js
+user = {};
+```
+
+---
+
+## Q228 – Why can direct mutation cause bugs?
+
+* [ ] Same object reference reused
+* [ ] React only accepts arrays
+* [ ] Context blocks updates
+* [ ] JSX cannot detect objects
+
+---
+
+## Q229 – Which components re-render when `theme` changes?
+
+* [ ] Components consuming theme context
+* [ ] Entire browser page
+* [ ] Only App component
+* [ ] No component
+
+---
+
+## Q230 – Which components consume Context?
+
+* [ ] Header
+* [ ] Profile
+* [ ] Dashboard
+* [ ] Settings
+
+---
+
+## Q231 – What data does `Header` consume?
+
+```jsx
+const { user } = useContext(UserContext);
+```
+
+* [ ] User
+* [ ] Theme
+* [ ] Ref
+* [ ] Effect
+
+---
+
+## Q232 – What happens when theme toggles?
+
+```jsx
+setTheme(
+  theme === "light"
+    ? "dark"
+    : "light"
+);
+```
+
+* [ ] Context value updates
+* [ ] Consumer components re-render
+* [ ] Theme changes
+* [ ] All of the above
+
+---
+
+## Q233 – What is prop drilling?
+
+* [ ] Passing props through many levels unnecessarily
+* [ ] Rendering components twice
+* [ ] Using useEffect incorrectly
+* [ ] Creating nested arrays
+
+---
+
+## Q234 – What is a downside of Context API?
+
+* [ ] Large context updates can trigger many re-renders
+* [ ] Cannot store objects
+* [ ] Cannot work with hooks
+* [ ] Cannot update state
+
+---
+
+## Q235 – What optimization is commonly used with Context values?
+
+```jsx
+const value = {
+  user,
+  setUser,
+  theme,
+  setTheme
+};
+```
+
+* [ ] `useMemo`
+* [ ] `setTimeout`
+* [ ] `useRef`
+* [ ] `Promise`
+
+---
+
+## Q236 – Why might `useMemo` help here?
+
+* [ ] Prevent unnecessary value object recreation
+* [ ] Create context automatically
+* [ ] Replace Provider
+* [ ] Stop state updates
+
+---
+
+## Q237 – Which statement is true?
+
+* [ ] Every consumer subscribes to context changes
+* [ ] Context automatically prevents all re-renders
+* [ ] Context replaces state management completely
+* [ ] Context works without Provider
+
+---
+
+## Q238 – What happens if a component uses context outside Provider?
+
+```jsx
+const data = useContext(UserContext);
+```
+
+* [ ] It gets the default context value
+* [ ] React automatically creates Provider
+* [ ] State is created automatically
+* [ ] Context crashes browser
+
+---
+
+## Q239 – When would Context API be a good choice?
+
+* [ ] Theme management
+* [ ] Authenticated user data
+* [ ] Language settings
+* [ ] All of the above
+
+---
+
+## Q240 – Which is generally NOT recommended?
+
+* [ ] Putting frequently changing large app state into one giant context
+* [ ] Using context for theme
+* [ ] Using context for auth user
+* [ ] Splitting contexts by responsibility
+
+---
+
+# Bonus Tricky Question
+
+## Q241
+
+```jsx
+const value = {
+  user,
+  theme
+};
+```
+
+Even if `user` and `theme` don't change, this object is:
+
+* [ ] Recreated on every render
+* [ ] Automatically memoized by React
+* [ ] Stored in Virtual DOM forever
+* [ ] Immutable by default
+
+---
+
+## Q242
+
+```jsx
+const value = useMemo(() => ({
+  user,
+  theme
+}), [user, theme]);
+```
+
+What benefit does this provide?
+
+* [ ] Stable object reference between renders
+* [ ] Fewer unnecessary consumer re-renders
+* [ ] Better Context performance
+* [ ] All of the above
